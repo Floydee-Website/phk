@@ -4,6 +4,8 @@
 
 final result: passed
 
+Commercial terms updated to €1,200 development plus €20/month server and maintenance.
+
 ## Comparison
 
 - **Visual direction:** The implementation preserves the approved Mediterranean Precision direction through Aegean navy, bright white, restrained copper, editorial serif typography, and Cyprus-specific architecture.

@@ -1,6 +1,36 @@
 (() => {
   const ACCESS_CODE = "Floydeeinfotech2027*";
   const ACCESS_KEY = "phk-proposal-access";
+  const THEME_KEY = "phk-visual-atmosphere";
+  const THEMES = ["mediterranean", "light", "midnight", "terracotta"];
+
+  const applyTheme = (theme) => {
+    const selected = THEMES.includes(theme) ? theme : "mediterranean";
+    document.documentElement.dataset.theme = selected;
+    localStorage.setItem(THEME_KEY, selected);
+    document.querySelectorAll("[data-theme-choice]").forEach((choice) => {
+      const active = choice.dataset.themeChoice === selected;
+      choice.classList.toggle("is-active", active);
+      choice.setAttribute("aria-pressed", String(active));
+    });
+  };
+
+  applyTheme(localStorage.getItem(THEME_KEY));
+
+  document.querySelectorAll("[data-theme-studio]").forEach((studio) => {
+    const toggle = studio.querySelector("[data-theme-toggle]");
+    toggle.addEventListener("click", () => {
+      const open = studio.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+    studio.querySelectorAll("[data-theme-choice]").forEach((choice) => {
+      choice.addEventListener("click", () => {
+        applyTheme(choice.dataset.themeChoice);
+        window.setTimeout(() => studio.classList.remove("is-open"), 260);
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  });
 
   const unlockProposal = () => {
     sessionStorage.setItem(ACCESS_KEY, "granted");
@@ -106,5 +136,12 @@
     document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
   } else {
     document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
+  }
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.addEventListener("pointermove", (event) => {
+      document.documentElement.style.setProperty("--pointer-x", `${event.clientX}px`);
+      document.documentElement.style.setProperty("--pointer-y", `${event.clientY}px`);
+    }, { passive: true });
   }
 })();
